@@ -71,6 +71,7 @@ def create_nfo(movie_json):
     print(f'movie gallery URL: {movie_gallery_url}')
     movie_gallery_response = requests.get(movie_gallery_url)
     if movie_gallery_response.status_code == requests.codes.ok:
+        print(f'get movie gallery from: {movie_gallery_url} success!')
         movie_gallery_base_url = f'https://www.1pondo.tv/dyn/dla/images/'
         movie_gallery_json = movie_gallery_response.json()
         images = movie_gallery_json['Rows']
@@ -88,6 +89,36 @@ def create_nfo(movie_json):
             extrafanart_pathname = f'{extra_fanart_path}/{extrafanart}'
             image_url = image['Img']
             image_concat_url = f'{movie_gallery_base_url}{image_url}'
+            image_response = requests.get(image_concat_url)
+            extrafanart_file = open(extrafanart_pathname, 'wb')
+            extrafanart_file.write(image_response.content)
+            extrafanart_file.close()
+
+    movie_gallery_url = f'https://www.1pondo.tv/dyn/phpauto/movie_galleries/movie_id/{movie_id}.json'
+    print(f'movie gallery URL: {movie_gallery_url}')
+    movie_gallery_response = requests.get(movie_gallery_url)
+    if movie_gallery_response.status_code == requests.codes.ok:
+        print(f'get movie gallery from: {movie_gallery_url} success!')
+        movie_gallery_base_url = f'https://www.1pondo.tv/assets/'
+        movie_gallery_json = movie_gallery_response.json()
+        images = movie_gallery_json['Rows']
+        print(f'total images: ', len(images))
+
+        # Create extra-fanart folder
+        extra_fanart_path = f'{movie_folder_path}/extrafanart'
+        pathlib.Path(extra_fanart_path).mkdir(parents=True, exist_ok=True)
+
+        # Download extrafanart Images
+        fanart_count: int = 0
+        for image in images:
+            fanart_count = fanart_count + 1
+            extrafanart = f'fanart{fanart_count}.jpg'
+            extrafanart_pathname = f'{extra_fanart_path}/{extrafanart}'
+            image_url = image['Filename']
+            if image['Protected']:
+                image_concat_url = f'{movie_gallery_base_url}member/{movie_id}/popu/{image_url}'
+            else:
+                image_concat_url = f'{movie_gallery_base_url}sample/{movie_id}/popu/{image_url}'
             image_response = requests.get(image_concat_url)
             extrafanart_file = open(extrafanart_pathname, 'wb')
             extrafanart_file.write(image_response.content)
