@@ -24,8 +24,11 @@ def create_nfo(movie_json):
     series = movie_json['Series']
     movie_thumb_ultra = movie_json['ThumbUltra']
     sample_files = movie_json['SampleFiles']
+    sample_file_url = f''
+    sample_file_size = 0
     for sampleFile in sample_files:
-        if sampleFile['FileName'] == '1080p.mp4':
+        if sampleFile['FileSize'] > sample_file_size:
+            sample_file_size = sampleFile['FileSize']
             sample_file_url = sampleFile['URL']
 
     # movie folder name
