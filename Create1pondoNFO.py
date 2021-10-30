@@ -70,6 +70,7 @@ def create_nfo(movie_json):
         fanart_file.close()
 
     # 3. Extra-fanart
+    images = None
     movie_gallery_url = f'https://www.1pondo.tv/dyn/dla/json/movie_gallery/{movie_id}.json'
     print(f'movie gallery URL: {movie_gallery_url}')
     movie_gallery_response = requests.get(movie_gallery_url)
@@ -164,8 +165,9 @@ def create_nfo(movie_json):
     f.write(f'\t<art>\n')
     f.write(f'\t\t<poster>{base_path}{actor}/{movie_folder_name}/poster.jpg</poster>\n')
     f.write(f'\t\t<fanart>{base_path}{actor}/{movie_folder_name}/fanart.jpg</fanart>\n')
-    for index in range(len(images)):
-        f.write(f'\t\t<fanart>{base_path}{actor}/{movie_folder_name}/extrafanart/fanart{index+1}.jpg</fanart>\n')
+    if images != None:
+        for index in range(len(images)):
+            f.write(f'\t\t<fanart>{base_path}{actor}/{movie_folder_name}/extrafanart/fanart{index+1}.jpg</fanart>\n')
     f.write(f'\t</art>\n')
     for actress in actresses_ja:
         f.write(f'\t<actor>\n')
