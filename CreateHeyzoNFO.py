@@ -51,6 +51,7 @@ def create_nfo(code, response):
     fanart_file.write(landscape_response.content)
     fanart_file.close()
 
+
     # 2. Get extra-fanart
     # Get from https://www.tubetubetube.com/pics/heyzo/airi-miun/2513/airi-miun-21.jpg
     extrafanart_base_url: str = f'https://www.tubetubetube.com/pics/heyzo/'
@@ -140,6 +141,8 @@ def create_nfo(code, response):
     f.write(f'\t<artist>{actor}</artist>\n')
     f.write(f'</movie>\n')
     f.close()
+
+
 if __name__ == '__main__':
 
     # Basic Inforamtion
